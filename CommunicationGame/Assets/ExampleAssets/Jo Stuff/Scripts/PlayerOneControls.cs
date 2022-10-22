@@ -1,13 +1,13 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class InputSystemTest: MonoBehaviour
+public class PlayerOneControls : MonoBehaviour
 {
     public PlayerInput playerInput;
-    public InputActionAsset playerInputActions;
+    //private PlayerInputActions playerInputActions;
+    public InputActionAsset inputAction;
     public CharacterController playerController;
     public InputActionMap player;
     public InputAction move;
@@ -19,10 +19,12 @@ public class InputSystemTest: MonoBehaviour
     {
         playerController = GetComponent<CharacterController>();
         playerInput = GetComponent<PlayerInput>();
-        playerInputActions = playerInput.actions;
-        player = playerInputActions.FindActionMap("Player");
+        inputAction = playerInput.actions;
+        player = inputAction.FindActionMap("Player");
         move = player.FindAction("Movement");
+        
         player.Enable();
+        move.Enable();
 
         //playerInputActions.Player.Enable();
         //playerInputActions.Player2.Enable();
@@ -40,13 +42,11 @@ public class InputSystemTest: MonoBehaviour
     {
         //inputVector = playerInputActions.Player.Movement.ReadValue<Vector2>();
         inputVector = move.ReadValue<Vector2>();
-        playerController.Move(new Vector3(move.ReadValue<Vector2>().x, 0, move.ReadValue<Vector2>().y) * (speed * Time.deltaTime));
+        playerController.Move(new Vector3(inputVector.x, 0, inputVector.y) * (speed * Time.deltaTime));
     }
 
     private void ApplyGravity()
     {
         playerController.Move(gravityVector);
     }
-    
-
 }
