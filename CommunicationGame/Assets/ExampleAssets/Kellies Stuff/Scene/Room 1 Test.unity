@@ -2336,6 +2336,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 6846850308782843074, guid: 7de686c74ac51e44db815c1d5df8fc9a, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6846850308782843076, guid: 7de686c74ac51e44db815c1d5df8fc9a, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
