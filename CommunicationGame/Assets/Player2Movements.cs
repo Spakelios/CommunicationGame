@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayMove : MonoBehaviour
+public class Player2Movements : MonoBehaviour
 {
     private CharacterController controller;
     private Vector3 playerVelocity;
@@ -19,14 +19,14 @@ public class PlayMove : MonoBehaviour
 
     void Update()
     {
-        
+
         groundedPlayer = controller.isGrounded;
         if (groundedPlayer && playerVelocity.y < 0)
         {
             playerVelocity.y = 0f;
         }
 
-        Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+        Vector3 move = new Vector3(Input.GetAxis("Horizontal2"), 0, Input.GetAxis("Vertical2"));
         controller.Move(move * Time.deltaTime * playerSpeed);
 
         if (move != Vector3.zero)
@@ -35,7 +35,7 @@ public class PlayMove : MonoBehaviour
         }
 
         // Changes the height position of the player..
-        if (Input.GetButtonDown("Jump") && groundedPlayer)
+        if (Input.GetButtonDown("Jump2") && groundedPlayer)
         {
             playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
         }
