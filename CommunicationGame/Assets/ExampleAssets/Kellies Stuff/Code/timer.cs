@@ -25,7 +25,7 @@ public class timer : MonoBehaviour
 
         if (currentTime <= 0)
         {
-            image.SetActive(true);
+            currentTime = 0;
         }
     }
 }
