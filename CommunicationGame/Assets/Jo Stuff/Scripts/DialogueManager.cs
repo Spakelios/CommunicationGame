@@ -29,7 +29,6 @@ public class DialogueManager : MonoBehaviour
         readingNote = true;
         nameText.text = dialogue.name;
         dialogueBox.SetActive(true);
-        Debug.Log("Starting conversation");
         sentences.Clear();
 
         foreach (string sentence in dialogue.sentences)
