@@ -12,6 +12,7 @@ public class B : MonoBehaviour
     public float speed = 5f;
     public Vector2 inputVector;
     private readonly Vector3 gravityVector = new Vector3(0, -9.81f, 0);
+    public bool canMove;
     private void Awake()
     {
         playerController = GetComponent<CharacterController>();
@@ -25,8 +26,10 @@ public class B : MonoBehaviour
     public void Update()
     {
         ApplyGravity();
-        Movement();
-
+        if (canMove)
+        {
+            Movement();
+        }
     }
 
     public void Movement()
