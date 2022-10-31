@@ -1,28 +1,27 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class A : MonoBehaviour
+public class NotesPlayer : MonoBehaviour
 {
     public PlayerInput playerInput;
-    public PlayerInputActions playerInputActions;
+    public Player2InputActions playerInputActions;
     private CharacterController playerController;
-    public bool canMove;
-    public PickupIngredient pickupIngredient;
-    public bool holdingItem;
+    public ReadNote readNote;
+    public DialogueManager dialogueManager;
 
     public float speed = 5f;
     public Vector2 inputVector;
     private readonly Vector3 gravityVector = new Vector3(0, -9.81f, 0);
+    public bool canMove;
     private void Awake()
     {
-        holdingItem = false;
         canMove = true;
+        dialogueManager = FindObjectOfType<DialogueManager>();
         playerController = GetComponent<CharacterController>();
         playerInput = GetComponent<PlayerInput>();
-        playerInputActions = new PlayerInputActions();
+        playerInputActions = new Player2InputActions();
         
         playerInputActions.Player.Enable();
 
@@ -36,15 +35,14 @@ public class A : MonoBehaviour
             Movement();
         }
 
-        if ( pickupIngredient.inRange && !holdingItem && playerInputActions.Player.Interact.triggered)
+        if (readNote.inRange && !dialogueManager.readingNote && playerInputActions.Player.Interact.triggered)
         {
-            Debug.Log("pressed");
-            pickupIngredient.Pickup();
+            readNote.TriggerDialogue();
         }
         
-        else if (holdingItem && playerInputActions.Player.Interact.triggered)
+        else if (dialogueManager.readingNote && playerInputActions.Player.Interact.triggered)
         {
-            pickupIngredient.PutDown();
+            dialogueManager.DisplayNextLine();
         }
     }
 
@@ -59,10 +57,4 @@ public class A : MonoBehaviour
     {
         playerController.Move(gravityVector);
     }
-
-    private void PickupIngredient()
-    {
-        
-    }
-    
 }

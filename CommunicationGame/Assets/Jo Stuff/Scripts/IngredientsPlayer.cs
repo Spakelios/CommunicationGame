@@ -1,23 +1,27 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class B : MonoBehaviour
+public class IngredientsPlayer : MonoBehaviour
 {
     public PlayerInput playerInput;
-    public Player2InputActions playerInputActions;
+    public PlayerInputActions playerInputActions;
     private CharacterController playerController;
+    public PickupIngredient pickupIngredient;
+    public bool holdingItem;
 
     public float speed = 5f;
     public Vector2 inputVector;
     private readonly Vector3 gravityVector = new Vector3(0, -9.81f, 0);
-    public bool canMove;
     private void Awake()
     {
+        holdingItem = false;
+        pickupIngredient = null;
         playerController = GetComponent<CharacterController>();
         playerInput = GetComponent<PlayerInput>();
-        playerInputActions = new Player2InputActions();
+        playerInputActions = new PlayerInputActions();
         
         playerInputActions.Player.Enable();
 
@@ -26,9 +30,17 @@ public class B : MonoBehaviour
     public void Update()
     {
         ApplyGravity();
-        if (canMove)
+        Movement();
+
+            if ( pickupIngredient.inRange && !holdingItem && playerInputActions.Player.Interact.triggered)
         {
-            Movement();
+            Debug.Log("pressed");
+            pickupIngredient.Pickup();
+        }
+        
+        else if (holdingItem && playerInputActions.Player.Interact.triggered)
+        {
+            pickupIngredient.PutDown();
         }
     }
 
@@ -43,4 +55,10 @@ public class B : MonoBehaviour
     {
         playerController.Move(gravityVector);
     }
+
+    private void PickupIngredient()
+    {
+        
+    }
+    
 }

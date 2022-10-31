@@ -11,20 +11,25 @@ public class DialogueManager : MonoBehaviour
     public TextMeshProUGUI dialogueText;
     public TextMeshProUGUI nameText;
     public GameObject dialogueBox;
-    private AudioManager audioManager;
+    public NotesPlayer player;
+    public bool readingNote;
+
 
     void Start()
     {
+        readingNote = false;
+        player = FindObjectOfType<NotesPlayer>();
         sentences = new Queue<string>();
         dialogueBox.SetActive(false);
-        audioManager = FindObjectOfType<AudioManager>();
     }
 
     public void StartDialogue(Dialogue dialogue)
     {
+        player.canMove = false;
+        readingNote = true;
+        nameText.text = dialogue.name;
         dialogueBox.SetActive(true);
         Debug.Log("Starting conversation");
-        nameText.text = dialogue.name;
         sentences.Clear();
 
         foreach (string sentence in dialogue.sentences)
@@ -52,7 +57,8 @@ public class DialogueManager : MonoBehaviour
 
     public void EndDialogue()
     {
-        Debug.Log("End");
+        readingNote = false;
+        player.canMove = true;
         dialogueBox.SetActive(false);
     }
 }

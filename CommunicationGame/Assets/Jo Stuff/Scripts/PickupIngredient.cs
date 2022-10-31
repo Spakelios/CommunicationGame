@@ -8,11 +8,11 @@ public class PickupIngredient : MonoBehaviour
     public bool inRange;
     public GameObject ingredient;
     public GameObject hand;
-    public A player;
+    public IngredientsPlayer player;
 
     private void Awake()
     {
-        player = FindObjectOfType<A>();
+        player = FindObjectOfType<IngredientsPlayer>();
         inRange = false;
         ingredient = gameObject.transform.parent.gameObject;
         hand = GameObject.Find("Hand");
