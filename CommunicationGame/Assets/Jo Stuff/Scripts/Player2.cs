@@ -1,15 +1,18 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class NotesPlayer : MonoBehaviour
+public class Player2 : MonoBehaviour
 {
     public PlayerInput playerInput;
     public Player2InputActions playerInputActions;
     private CharacterController playerController;
     public ReadNote readNote;
     public DialogueManager dialogueManager;
+    public PickupIngredient pickupIngredient;
+    public bool holdingItem;
 
     public float speed = 5f;
     public Vector2 inputVector;
@@ -18,6 +21,8 @@ public class NotesPlayer : MonoBehaviour
     private void Awake()
     {
         canMove = true;
+        holdingItem = false;
+        pickupIngredient = null;
         dialogueManager = FindObjectOfType<DialogueManager>();
         playerController = GetComponent<CharacterController>();
         playerInput = GetComponent<PlayerInput>();
@@ -35,18 +40,18 @@ public class NotesPlayer : MonoBehaviour
             Movement();
         }
 
-        /*
-        if (readNote.inRange && !dialogueManager.readingNote && playerInputActions.Player.Interact.triggered)
+        if (readNote.P2inRange)
         {
-            readNote.TriggerDialogue();
+            NoteCheck();
         }
-        
-        else if (dialogueManager.readingNote && playerInputActions.Player.Interact.triggered)
+    }
+
+    public void LateUpdate()
+    {
+        if (pickupIngredient.P2inRange)
         {
-            dialogueManager.DisplayNextLine();
+            PickupCheck();
         }
-        
-        */
     }
 
     public void Movement()
@@ -56,8 +61,34 @@ public class NotesPlayer : MonoBehaviour
         playerController.Move(new Vector3(inputVector.x, 0, inputVector.y) * (speed * Time.deltaTime));
     }
 
-    public void ApplyGravity()
+    private void ApplyGravity()
     {
         playerController.Move(gravityVector);
+    }
+
+    private void PickupCheck()
+    {
+        switch (holdingItem)
+        {
+            case false when playerInputActions.Player.Interact.triggered:
+                pickupIngredient.PickupP2();
+                break;
+            case true when playerInputActions.Player.Interact.triggered:
+                pickupIngredient.PutDownP2();
+                break;
+        }
+    }
+
+    private void NoteCheck()
+    {
+        switch (dialogueManager.readingNote)
+        {
+            case false when playerInputActions.Player.Interact.triggered:
+                readNote.TriggerDialogueP2();
+                break;
+            case true when playerInputActions.Player.Interact.triggered:
+                dialogueManager.DisplayNextLine();
+                break;
+        }
     }
 }
