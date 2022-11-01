@@ -29,7 +29,7 @@ public class ReadNote : MonoBehaviour
         P2inRange = false;
     }
 
-    public void OnTriggerStay(Collider other)
+    public void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player1"))
         {
