@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: d1c3109bdb54ad54c8a2b2838528e640
+    path: Assets/Kellies Stuff/Scene/Main Menu.unity
+    guid: 5d966bd62cbb15641919110b7c639c85
+  - enabled: 1
+    path: Assets/Kellies Stuff/Scene/Kitchen.unity
+    guid: ebf2fe071b2bac04ab0cdfce3674d3b7
   m_configObjects: {}
