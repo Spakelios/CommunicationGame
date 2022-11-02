@@ -18,4 +18,9 @@ public class Buttons : MonoBehaviour
     {
         SceneManager.LoadScene("Kitchen");
     }
+
+    public void EndGame()
+    {
+        SceneManager.LoadScene("Main Menu");
+    }
 }
