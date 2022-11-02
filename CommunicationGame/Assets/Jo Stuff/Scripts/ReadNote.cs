@@ -18,6 +18,7 @@ public class ReadNote : MonoBehaviour
     public TextMeshProUGUI dialogueText;
     public TextMeshProUGUI nameText;
     public GameObject dialogueBox;
+    public AudioSource read;
 
     private void Awake()
     {
@@ -27,6 +28,7 @@ public class ReadNote : MonoBehaviour
         player2 = FindObjectOfType<Player2>();
         P1inRange = false;
         P2inRange = false;
+        read = GameObject.Find("Note").GetComponent<AudioSource>();
     }
 
     public void OnTriggerEnter(Collider other)
@@ -67,12 +69,14 @@ public class ReadNote : MonoBehaviour
 
     public void TriggerDialogueP1()
     {
+        read.Play();
         player1.canMove = false;
         dialogueManager.StartDialogue(dialogue);
     }
     
     public void TriggerDialogueP2()
     {
+        read.Play();
         player2.canMove = false;
         dialogueManager.StartDialogue(dialogue);
     }

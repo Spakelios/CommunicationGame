@@ -11,6 +11,8 @@ public class OpenDoor : MonoBehaviour
     public Player2 player2;
     public bool doorOpen;
     public bool doorClosed;
+    public AudioSource open;
+    public AudioSource close;
 
     private void Awake()
     {
@@ -22,6 +24,8 @@ public class OpenDoor : MonoBehaviour
         player2 = FindObjectOfType<Player2>();
         P1inRange = false;
         P2inRange = false;
+        open = GameObject.Find("Open").GetComponent<AudioSource>();
+        close = GameObject.Find("Close").GetComponent<AudioSource>();
     }
     
     private void OnTriggerEnter(Collider other)
@@ -58,6 +62,7 @@ public class OpenDoor : MonoBehaviour
     {
         doorOpen = true;
         doorClosed = false;
+        open.Play();
         anim.SetBool("Open", true);
         anim.SetBool("Close", false);
     }
@@ -66,6 +71,7 @@ public class OpenDoor : MonoBehaviour
     {
         doorOpen = false;
         doorClosed = true;
+        close.Play();
         anim.SetBool("Open", false);
         anim.SetBool("Close", true);
     }
@@ -74,6 +80,7 @@ public class OpenDoor : MonoBehaviour
     {
         doorOpen = true;
         doorClosed = false;
+        open.Play();
         anim.SetBool("Open", true);
         anim.SetBool("Close", false);
     }
@@ -82,6 +89,7 @@ public class OpenDoor : MonoBehaviour
     {
         doorOpen = false;
         doorClosed = true;
+        close.Play();
         anim.SetBool("Open", false);
         anim.SetBool("Close", true);
     }

@@ -32,11 +32,8 @@ public class AudioManager : MonoBehaviour
             s.source.pitch = s.pitch;
             s.source.loop = s.loop;
         }
-    }
-
-    private void Start()
-    {
-        Play("AudioFile");
+        
+        Play("MainTheme");
     }
 
     public void Play(string name)

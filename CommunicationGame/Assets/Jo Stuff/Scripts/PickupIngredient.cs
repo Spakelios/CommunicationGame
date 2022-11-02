@@ -18,6 +18,8 @@ public class PickupIngredient : MonoBehaviour
     public bool inBowl;
     public GameObject bowl1;
     public GameObject bowl2;
+    public AudioSource pickup;
+    private AudioSource putdown;
 
     private void Awake()
     {
@@ -34,6 +36,8 @@ public class PickupIngredient : MonoBehaviour
         bowl1 = GameObject.Find("In1");
         bowl2 = GameObject.Find("In2");
         inBowl = false;
+        pickup = GameObject.Find("Pickup").GetComponent<AudioSource>();
+        putdown = GameObject.Find("PutDown").GetComponent<AudioSource>();
     }
 
     private void OnTriggerStay(Collider other)
@@ -73,6 +77,7 @@ public class PickupIngredient : MonoBehaviour
         ingredient.transform.rotation = Quaternion.Euler(0, 0, 0);
         ingredient.transform.parent = hand1.transform;
         player1.holdingItem = true;
+        pickup.Play();
     }
 
     public void PutDownP1()
@@ -89,10 +94,12 @@ public class PickupIngredient : MonoBehaviour
         ingredient.transform.rotation = Quaternion.Euler(0, 0, 0);
         ingredient.transform.parent = hand2.transform;
         player2.holdingItem = true;
+        pickup.Play();
     }
 
     public void PutDownP2()
     {
+        
         ingredient.GetComponent<Rigidbody>().isKinematic = false;
         ingredient.transform.parent = null;
         player2.holdingItem = false;
@@ -105,16 +112,19 @@ public class PickupIngredient : MonoBehaviour
         ingredient.transform.position = bowl1.transform.position;
         ingredient.transform.parent = null;
         inBowl = true;
+        putdown.Play();
 
     }
     
     public void PutInBowlP2()
     {
+        putdown.Play();
         player2.holdingItem = false;
         ingredient.GetComponent<Rigidbody>().isKinematic = true;
         ingredient.transform.position = bowl2.transform.position;
         ingredient.transform.parent = null;
         inBowl = true;
+        putdown.Play();
 
     }
 }
