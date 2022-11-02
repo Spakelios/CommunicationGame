@@ -8,6 +8,8 @@ TagManager:
   - Ingredient
   - Player1
   - Player2
+  - P1Bowl
+  - P2Bowl
   layers:
   - Default
   - TransparentFX

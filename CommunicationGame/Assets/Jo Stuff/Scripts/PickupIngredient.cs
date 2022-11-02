@@ -15,6 +15,9 @@ public class PickupIngredient : MonoBehaviour
     public Player2 player2;
     public bool P1inRange;
     public bool P2inRange;
+    public bool inBowl;
+    public GameObject bowl1;
+    public GameObject bowl2;
 
     private void Awake()
     {
@@ -28,6 +31,9 @@ public class PickupIngredient : MonoBehaviour
         ingredient = gameObject.transform.parent.gameObject;
         hand1 = GameObject.Find("Hand1");
         hand2 = GameObject.Find("Hand2");
+        bowl1 = GameObject.Find("In1");
+        bowl2 = GameObject.Find("In2");
+        inBowl = false;
     }
 
     private void OnTriggerStay(Collider other)
@@ -64,6 +70,7 @@ public class PickupIngredient : MonoBehaviour
     {
         ingredient.GetComponent<Rigidbody>().isKinematic = true;
         ingredient.transform.position = hand1.transform.position;
+        ingredient.transform.rotation = Quaternion.Euler(0, 0, 0);
         ingredient.transform.parent = hand1.transform;
         player1.holdingItem = true;
     }
@@ -79,6 +86,7 @@ public class PickupIngredient : MonoBehaviour
     {
         ingredient.GetComponent<Rigidbody>().isKinematic = true;
         ingredient.transform.position = hand2.transform.position;
+        ingredient.transform.rotation = Quaternion.Euler(0, 0, 0);
         ingredient.transform.parent = hand2.transform;
         player2.holdingItem = true;
     }
@@ -88,5 +96,25 @@ public class PickupIngredient : MonoBehaviour
         ingredient.GetComponent<Rigidbody>().isKinematic = false;
         ingredient.transform.parent = null;
         player2.holdingItem = false;
+    }
+    
+    public void PutInBowlP1()
+    {
+        player1.holdingItem = false;
+        ingredient.GetComponent<Rigidbody>().isKinematic = true;
+        ingredient.transform.position = bowl1.transform.position;
+        ingredient.transform.parent = null;
+        inBowl = true;
+
+    }
+    
+    public void PutInBowlP2()
+    {
+        player2.holdingItem = false;
+        ingredient.GetComponent<Rigidbody>().isKinematic = true;
+        ingredient.transform.position = bowl2.transform.position;
+        ingredient.transform.parent = null;
+        inBowl = true;
+
     }
 }

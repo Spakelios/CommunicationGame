@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro.SpriteAssetUtilities;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -15,6 +16,7 @@ public class Player1 : MonoBehaviour
     public DialogueManager dialogueManager;
     public bool canMove;
     public OpenDoor openDoor;
+    public Bowl bowl;
 
     public float speed = 5f;
     public Vector2 inputVector;
@@ -29,8 +31,11 @@ public class Player1 : MonoBehaviour
         playerController = GetComponent<CharacterController>();
         playerInput = GetComponent<PlayerInput>();
         playerInputActions = new PlayerInputActions();
+        bowl = GameObject.FindWithTag("P1Bowl").GetComponentInChildren<Bowl>();
         
         playerInputActions.Player.Enable();
+        
+        
 
     }
 
@@ -57,6 +62,7 @@ public class Player1 : MonoBehaviour
         }
     }
 
+    
     public void FixedUpdate()
     {
                 
@@ -65,6 +71,7 @@ public class Player1 : MonoBehaviour
             DoorCheck();
         }
     }
+    
 
     public void Movement()
     {
@@ -83,10 +90,22 @@ public class Player1 : MonoBehaviour
         switch (holdingItem)
         {
             case false when playerInputActions.Player.Interact.triggered:
-                pickupIngredient.PickupP1();
+                if (!pickupIngredient.inBowl)
+                {
+                    pickupIngredient.PickupP1();
+                }
                 break;
             case true when playerInputActions.Player.Interact.triggered:
-                pickupIngredient.PutDownP1();
+
+                if (!bowl.P1inRange)
+                {
+                    pickupIngredient.PutDownP1();
+                }
+                
+                else if (bowl.P1inRange)
+                {
+                    pickupIngredient.PutInBowlP1();
+                }
                 break;
         }
     }
@@ -95,10 +114,10 @@ public class Player1 : MonoBehaviour
     {
         switch (dialogueManager.readingNote)
         {
-            case false when playerInputActions.Player.Interact.triggered:
+            case false when playerInputActions.Player.OpenDoors.triggered:
                 readNote.TriggerDialogueP1();
                 break;
-            case true when playerInputActions.Player.Interact.triggered:
+            case true when playerInputActions.Player.OpenDoors.triggered:
                 dialogueManager.DisplayNextLine();
                 break;
         }
@@ -106,7 +125,7 @@ public class Player1 : MonoBehaviour
 
     private void DoorCheck()
     {
-        if (!openDoor.doorOpen && openDoor.doorClosed && playerInputActions.Player.OpenDoors.triggered)
+        if (openDoor.P1inRange && !openDoor.doorOpen && openDoor.doorClosed && playerInputActions.Player.OpenDoors.triggered)
         {
             Debug.Log("Open Door");
             openDoor.OpenDoorP1();

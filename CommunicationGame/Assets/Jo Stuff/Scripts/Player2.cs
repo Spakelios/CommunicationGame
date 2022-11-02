@@ -14,6 +14,7 @@ public class Player2 : MonoBehaviour
     public PickupIngredient pickupIngredient;
     public bool holdingItem;
     public OpenDoor openDoor;
+    public Bowl bowl;
 
     public float speed = 5f;
     public Vector2 inputVector;
@@ -29,7 +30,8 @@ public class Player2 : MonoBehaviour
         playerController = GetComponent<CharacterController>();
         playerInput = GetComponent<PlayerInput>();
         playerInputActions = new Player2InputActions();
-        
+        bowl = GameObject.FindWithTag("P2Bowl").GetComponentInChildren<Bowl>();
+
         playerInputActions.Player.Enable();
 
     }
@@ -82,10 +84,21 @@ public class Player2 : MonoBehaviour
         switch (holdingItem)
         {
             case false when playerInputActions.Player.Interact.triggered:
-                pickupIngredient.PickupP2();
+                if (!pickupIngredient.inBowl)
+                {
+                    pickupIngredient.PickupP2();
+                }
                 break;
             case true when playerInputActions.Player.Interact.triggered:
-                pickupIngredient.PutDownP2();
+                if (!bowl.P2inRange)
+                {
+                    pickupIngredient.PutDownP2();
+                }
+                
+                else if (bowl.P2inRange)
+                {
+                    pickupIngredient.PutInBowlP2();
+                }
                 break;
         }
     }
@@ -94,10 +107,10 @@ public class Player2 : MonoBehaviour
     {
         switch (dialogueManager.readingNote)
         {
-            case false when playerInputActions.Player.Interact.triggered:
+            case false when playerInputActions.Player.OpenDoors.triggered:
                 readNote.TriggerDialogueP2();
                 break;
-            case true when playerInputActions.Player.Interact.triggered:
+            case true when playerInputActions.Player.OpenDoors.triggered:
                 dialogueManager.DisplayNextLine();
                 break;
         }
