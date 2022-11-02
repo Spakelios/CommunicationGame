@@ -33,6 +33,14 @@ public class @Player2InputActions : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""OpenDoors"",
+                    ""type"": ""Button"",
+                    ""id"": ""c96396dd-98a2-465d-a7c5-d953c31c385e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -211,6 +219,17 @@ public class @Player2InputActions : IInputActionCollection, IDisposable
                     ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b8229135-f89c-41a0-acdf-78481f2a4c54"",
+                    ""path"": ""<Keyboard>/rightShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OpenDoors"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -255,6 +274,7 @@ public class @Player2InputActions : IInputActionCollection, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
+        m_Player_OpenDoors = m_Player.FindAction("OpenDoors", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -306,12 +326,14 @@ public class @Player2InputActions : IInputActionCollection, IDisposable
     private IPlayerActions m_PlayerActionsCallbackInterface;
     private readonly InputAction m_Player_Movement;
     private readonly InputAction m_Player_Interact;
+    private readonly InputAction m_Player_OpenDoors;
     public struct PlayerActions
     {
         private @Player2InputActions m_Wrapper;
         public PlayerActions(@Player2InputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Movement => m_Wrapper.m_Player_Movement;
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
+        public InputAction @OpenDoors => m_Wrapper.m_Player_OpenDoors;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -327,6 +349,9 @@ public class @Player2InputActions : IInputActionCollection, IDisposable
                 @Interact.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
                 @Interact.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
                 @Interact.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
+                @OpenDoors.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnOpenDoors;
+                @OpenDoors.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnOpenDoors;
+                @OpenDoors.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnOpenDoors;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -337,6 +362,9 @@ public class @Player2InputActions : IInputActionCollection, IDisposable
                 @Interact.started += instance.OnInteract;
                 @Interact.performed += instance.OnInteract;
                 @Interact.canceled += instance.OnInteract;
+                @OpenDoors.started += instance.OnOpenDoors;
+                @OpenDoors.performed += instance.OnOpenDoors;
+                @OpenDoors.canceled += instance.OnOpenDoors;
             }
         }
     }
@@ -372,5 +400,6 @@ public class @Player2InputActions : IInputActionCollection, IDisposable
     {
         void OnMovement(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
+        void OnOpenDoors(InputAction.CallbackContext context);
     }
 }

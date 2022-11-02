@@ -13,6 +13,7 @@ public class Player2 : MonoBehaviour
     public DialogueManager dialogueManager;
     public PickupIngredient pickupIngredient;
     public bool holdingItem;
+    public OpenDoor openDoor;
 
     public float speed = 5f;
     public Vector2 inputVector;
@@ -23,6 +24,7 @@ public class Player2 : MonoBehaviour
         canMove = true;
         holdingItem = false;
         pickupIngredient = null;
+        openDoor = null;
         dialogueManager = FindObjectOfType<DialogueManager>();
         playerController = GetComponent<CharacterController>();
         playerInput = GetComponent<PlayerInput>();
@@ -51,6 +53,15 @@ public class Player2 : MonoBehaviour
         if (pickupIngredient.P2inRange)
         {
             PickupCheck();
+        }
+    }
+    
+    public void FixedUpdate()
+    {
+                
+        if (openDoor.P2inRange)
+        {
+            DoorCheck();
         }
     }
 
@@ -89,6 +100,21 @@ public class Player2 : MonoBehaviour
             case true when playerInputActions.Player.Interact.triggered:
                 dialogueManager.DisplayNextLine();
                 break;
+        }
+    }
+    
+    private void DoorCheck()
+    {
+        if (!openDoor.doorOpen && openDoor.doorClosed && playerInputActions.Player.OpenDoors.triggered)
+        {
+            Debug.Log("Open Door");
+            openDoor.OpenDoorP2();
+        }
+
+        else if (openDoor.doorOpen && !openDoor.doorClosed && playerInputActions.Player.OpenDoors.triggered)
+        {
+            Debug.Log("Close Door");
+            openDoor.CloseDoorP2();
         }
     }
 }

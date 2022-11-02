@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,7 @@ public class Player1 : MonoBehaviour
     public ReadNote readNote;
     public DialogueManager dialogueManager;
     public bool canMove;
+    public OpenDoor openDoor;
 
     public float speed = 5f;
     public Vector2 inputVector;
@@ -22,6 +24,7 @@ public class Player1 : MonoBehaviour
         canMove = true;
         holdingItem = false;
         pickupIngredient = null;
+        openDoor = null;
         dialogueManager = FindObjectOfType<DialogueManager>();
         playerController = GetComponent<CharacterController>();
         playerInput = GetComponent<PlayerInput>();
@@ -51,6 +54,15 @@ public class Player1 : MonoBehaviour
         if (pickupIngredient.P1inRange)
         {
             PickupCheck();
+        }
+    }
+
+    public void FixedUpdate()
+    {
+                
+        if (openDoor.P1inRange)
+        {
+            DoorCheck();
         }
     }
 
@@ -89,6 +101,21 @@ public class Player1 : MonoBehaviour
             case true when playerInputActions.Player.Interact.triggered:
                 dialogueManager.DisplayNextLine();
                 break;
+        }
+    }
+
+    private void DoorCheck()
+    {
+        if (!openDoor.doorOpen && openDoor.doorClosed && playerInputActions.Player.OpenDoors.triggered)
+        {
+            Debug.Log("Open Door");
+            openDoor.OpenDoorP1();
+        }
+
+        else if (openDoor.doorOpen && !openDoor.doorClosed && playerInputActions.Player.OpenDoors.triggered)
+        {
+            Debug.Log("Close Door");
+            openDoor.CloseDoorP1();
         }
     }
 }
